@@ -1,7 +1,12 @@
 
 # dplyrJS
 
-A Javascript implementation of Hadley Wickham's [dplyr package](https://github.com/hadley/dplyr) for data manipulation in R.
+A first stab at a Javascript implementation of Hadley Wickham's [dplyr
+package](https://github.com/hadley/dplyr) for data manipulation in R.
+
+Right now, only the single table operations are implementated. Joins
+are on the to-do list.
+
 
 ## Installation
 
@@ -17,6 +22,31 @@ in your HTML file, making the content of `dplyr.js` available to the
 other scripts on your page.
 
 
-## API
+## Usage
 
-((write me))
+DplyrJS's main data structure is a _data frame_. A data frame
+represents a table of data, where rows in the table are data points
+(experiments) and columns are variables (observations). 
+
+    ((example))
+
+A data frame is created by calling `dataframe` with an array of
+objects, where each object represents a row of the table and maps the
+variables to their value for that row.
+
+    var tbl = [ 
+                { ... }
+                       
+              ];
+
+    var df = dataframe(tbl);
+
+Once a data frame has been created, it can be manipulated using the
+available methods.
+
+### Data frame methods
+
+* `_df_.rows()`
+
+Return the arrays of rows in the data frame
+
