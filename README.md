@@ -45,7 +45,15 @@ Once a data frame has been created, it can be manipulated using the
 available methods.
 
 
-### _df_.rows()
+### _df_`.rows()`
 
 Return the arrays of rows in the data frame
+
+### _df_`.row(`_i_`)`
+
+### _df_`.map(`_f_`)`
+
+### _df_`.forEach(`_f_`)`
+
+### _df_`.reduce(`_f_`,`[_init_]`)`
 
