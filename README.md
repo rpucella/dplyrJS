@@ -44,9 +44,8 @@ variables to their value for that row.
 Once a data frame has been created, it can be manipulated using the
 available methods.
 
-### Data frame methods
 
-* `_df_.rows()`
+### _df_`.rows()`
 
 Return the arrays of rows in the data frame
 
