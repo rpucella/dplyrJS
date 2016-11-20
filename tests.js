@@ -1,8 +1,8 @@
 
-
-
 /************************************************************ 
  * testing
+ *
+ * Run 'node tests.js' to run the test suite
  *
  */
  
