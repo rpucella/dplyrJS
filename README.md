@@ -216,13 +216,93 @@ Return a new data frame where each row has been augmented with new
 fields. The new fields are described in _new_field_ which is an object
 assigning to each new field the function used to compute the value of
 that new field for every row. That function can be given in two ways,
-as in the [filter()](#df-filter-f) method.
+as in the [filter()](#dffilter-f-) method: as a function taking the
+whole row as input, or as an array with a function taking values as
+inputs, and the fields to use as inputs.
+
+     > family.mutate({
+           new_age:function(r) { return r.age * 2; },
+           relationship:[function(v1,v2) { return v1 + " -> " + v2; },"name","kid_name"]
+         }).rows()
+    [ { name: 'Alice',
+        kid_name: 'Stephan',
+        age: 10,
+        new_age: 20,
+        relationship: 'Alice -> Stephan' },
+      { name: 'Bob',
+        kid_name: 'Terri',
+        age: 7,
+        new_age: 14,
+        relationship: 'Bob -> Terri' },
+      { name: 'Charlie',
+        kid_name: 'Ulrich',
+        age: 12,
+        new_age: 24,
+        relationship: 'Charlie -> Ulrich' },
+      { name: 'Alice',
+        kid_name: 'Vanessa',
+        age: 8,
+        new_age: 16,
+        relationship: 'Alice -> Vanessa' },
+      { name: 'Bob',
+        kid_name: 'William',
+        age: 15,
+        new_age: 30,
+        relationship: 'Bob -> William' },
+      { name: 'Charlie',
+        kid_name: 'Xavier',
+        age: 18,
+        new_age: 36,
+        relationship: 'Charlie -> Xavier' },
+      { name: 'Alice',
+        kid_name: 'Yolanda',
+        age: 3,
+        new_age: 6,
+        relationship: 'Alice -> Yolanda' },
+      { name: 'Bob',
+        kid_name: 'Zachary',
+        age: 9,
+        new_age: 18,
+        relationship: 'Bob -> Zachary' } ]
 
 
 ### _df_.summarise( _new_fields_ )
+### _df_.summarize( _new_fields_ )
+
+Return a new data frame where the rows of _df_ have been summarized
+into a single row with fields described in _new_fields_. 
+The _new_fields_ object gives for each new field the function used to
+compute the value of that new field. That function can be described in
+two ways, as in the [filter()](#dffilter-f-) method: as a function
+taking the whole data set as input (it is passed an object mapping
+every field of _df_ to the array of values of that field in the
+dataset), or as an array with a function taking arrays of values as
+inputs, and the fields to use as inputs (for field _f_, the function
+will be passed the array of values of field _f_ from the dataset).
+
+If `mean()` is a function taking an array of values and returning the
+mean of those values, then the following example shows how to compute a
+data frame containing the mean age of all the children in `family`:
+
+    > family.summarize({avg_age: [mean,"age"]}).rows()
+    [ { avg_age: 10.25 } ]
 
 
-### _df_.group_by( _field_ )
+### _df_.group_by( _field_ , ...)
+
+Return a [grouped data frame](#grouped-data-frames) where the groups
+are formed by the distinct values of fields _field_ , ... . Within
+each group, the rows are in the same relative order as in _df_.
+
+    > family.group_by("name").rows()
+    [ [ { name: 'Alice', kid_name: 'Stephan', age: 10 },
+        { name: 'Alice', kid_name: 'Vanessa', age: 8 },
+        { name: 'Alice', kid_name: 'Yolanda', age: 3 } ],
+      [ { name: 'Bob', kid_name: 'Terri', age: 7 },
+        { name: 'Bob', kid_name: 'William', age: 15 },
+        { name: 'Bob', kid_name: 'Zachary', age: 9 } ],
+      [ { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
+        { name: 'Charlie', kid_name: 'Xavier', age: 18 } ] ]
 
 
 ## Grouped Data Frames
