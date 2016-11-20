@@ -45,14 +45,14 @@ fields of the object represent the variable values for that
 row. For the above table:
 
     var tbl_family = [ 
-                { name: 'Alice', kid_name: 'Stephan', age: 10 },
-                { name: 'Bob', kid_name: 'Terri', age: 7 },
-                { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-                { name: 'Alice', kid_name: 'Vanessa', age: 8 },
-                { name: 'Bob', kid_name: 'William', age: 15 },
-                { name: 'Charlie', kid_name: 'Xavier', age: 18 },
-                { name: 'Alice', kid_name: 'Yolanda', age: 3 },
-                { name: 'Bob', kid_name: 'Zachary', age: 9 } ]
+                { name: 'Alice', child_name: 'Stephan', age: 10 },
+                { name: 'Bob', child_name: 'Terri', age: 7 },
+                { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+                { name: 'Alice', child_name: 'Vanessa', age: 8 },
+                { name: 'Bob', child_name: 'William', age: 15 },
+                { name: 'Charlie', child_name: 'Xavier', age: 18 },
+                { name: 'Alice', child_name: 'Yolanda', age: 3 },
+                { name: 'Bob', child_name: 'Zachary', age: 9 } ]
               ];
 
     var family = dataframe(tbl);
@@ -76,14 +76,14 @@ Return the number of rows in the data frame.
 Return the array of rows in the data frame.
 
     > family.rows()
-    [ { name: 'Alice', kid_name: 'Stephan', age: 10 },
-      { name: 'Bob', kid_name: 'Terri', age: 7 },
-      { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-      { name: 'Alice', kid_name: 'Vanessa', age: 8 },
-      { name: 'Bob', kid_name: 'William', age: 15 },
-      { name: 'Charlie', kid_name: 'Xavier', age: 18 },
-      { name: 'Alice', kid_name: 'Yolanda', age: 3 },
-      { name: 'Bob', kid_name: 'Zachary', age: 9 } ]
+    [ { name: 'Alice', child_name: 'Stephan', age: 10 },
+      { name: 'Bob', child_name: 'Terri', age: 7 },
+      { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+      { name: 'Alice', child_name: 'Vanessa', age: 8 },
+      { name: 'Bob', child_name: 'William', age: 15 },
+      { name: 'Charlie', child_name: 'Xavier', age: 18 },
+      { name: 'Alice', child_name: 'Yolanda', age: 3 },
+      { name: 'Bob', child_name: 'Zachary', age: 9 } ]
 
 
 ### _df_.row( _i_ )
@@ -91,7 +91,7 @@ Return the array of rows in the data frame.
 Return the _i_ th row in the data frame. The first row has index 0. 
 
     > family.row(2)
-    { name: 'Charlie', kid_name: 'Ulrich', age: 12 }
+    { name: 'Charlie', child_name: 'Ulrich', age: 12 }
 
 
 ### _df_.map( _f_ )
@@ -99,7 +99,7 @@ Return the _i_ th row in the data frame. The first row has index 0.
 Return the array obtained by applying function _f_ to every row of the
 data frame.
 
-    > family.map(function(r) { return r.kid_name; })
+    > family.map(function(r) { return r.child_name; })
     [ 'Stephan',
       'Terri',
       'Ulrich',
@@ -113,7 +113,7 @@ data frame.
 
 Call function _f_ for every row of the data frame, in order. 
 
-    > family.forEach(function(r) { console.log(r.kid_name+" is "+r.age+" years old"); })
+    > family.forEach(function(r) { console.log(r.child_name+" is "+r.age+" years old"); })
     Stephan is 10 years old
     Terri is 7 years old
     Ulrich is 12 years old
@@ -146,14 +146,14 @@ of field _field_ is preserved. If _descending_ is specified and
 `true`, sorting is done from high to low.
 
     > family.arrange("age").rows()
-    [ { name: 'Alice', kid_name: 'Yolanda', age: 3 },
-      { name: 'Bob', kid_name: 'Terri', age: 7 },
-      { name: 'Alice', kid_name: 'Vanessa', age: 8 },
-      { name: 'Bob', kid_name: 'Zachary', age: 9 },
-      { name: 'Alice', kid_name: 'Stephan', age: 10 },
-      { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-      { name: 'Bob', kid_name: 'William', age: 15 },
-      { name: 'Charlie', kid_name: 'Xavier', age: 18 } ]
+    [ { name: 'Alice', child_name: 'Yolanda', age: 3 },
+      { name: 'Bob', child_name: 'Terri', age: 7 },
+      { name: 'Alice', child_name: 'Vanessa', age: 8 },
+      { name: 'Bob', child_name: 'Zachary', age: 9 },
+      { name: 'Alice', child_name: 'Stephan', age: 10 },
+      { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+      { name: 'Bob', child_name: 'William', age: 15 },
+      { name: 'Charlie', child_name: 'Xavier', age: 18 } ]
 
 ### _df_.filter( _f_ )
 ### _df_.filter( [ _f_ , _field_ , ... ] )
@@ -170,16 +170,16 @@ The following examples filter the `family` data frame keeping only
 the children with age at most 10, using both techniques.
 
     > family.filter(function(r) { return r.age >= 10; }).rows()
-    [ { name: 'Alice', kid_name: 'Stephan', age: 10 },
-      { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-      { name: 'Bob', kid_name: 'William', age: 15 },
-      { name: 'Charlie', kid_name: 'Xavier', age: 18 } ]
+    [ { name: 'Alice', child_name: 'Stephan', age: 10 },
+      { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+      { name: 'Bob', child_name: 'William', age: 15 },
+      { name: 'Charlie', child_name: 'Xavier', age: 18 } ]
     
     > family.filter([function(v) { return v >= 10; },"age"]).rows()
-    [ { name: 'Alice', kid_name: 'Stephan', age: 10 },
-      { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-      { name: 'Bob', kid_name: 'William', age: 15 },
-      { name: 'Charlie', kid_name: 'Xavier', age: 18 } ]
+    [ { name: 'Alice', child_name: 'Stephan', age: 10 },
+      { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+      { name: 'Bob', child_name: 'William', age: 15 },
+      { name: 'Charlie', child_name: 'Xavier', age: 18 } ]
 
 ### _df_.distinct( )
 
@@ -191,24 +191,24 @@ Return a new data frame containing only rows of _df_ from index
 _start_ to index _end_ (exclusive). The first row of _df_ has index 0.
 
     > family.slice(3,6).rows()
-    [ { name: 'Alice', kid_name: 'Vanessa', age: 8 },
-      { name: 'Bob', kid_name: 'William', age: 15 },
-      { name: 'Charlie', kid_name: 'Xavier', age: 18 } ]
+    [ { name: 'Alice', child_name: 'Vanessa', age: 8 },
+      { name: 'Bob', child_name: 'William', age: 15 },
+      { name: 'Charlie', child_name: 'Xavier', age: 18 } ]
 
 
 ### _df_.select( _field_ , ... )
 
 Return a new data frame where each row only has fields _field_, ... . 
 
-    > family.select("kid_name","age").rows()
-    [ { kid_name: 'Stephan', age: 10 },
-      { kid_name: 'Terri', age: 7 },
-      { kid_name: 'Ulrich', age: 12 },
-      { kid_name: 'Vanessa', age: 8 },
-      { kid_name: 'William', age: 15 },
-      { kid_name: 'Xavier', age: 18 },
-      { kid_name: 'Yolanda', age: 3 },
-      { kid_name: 'Zachary', age: 9 } ]
+    > family.select("child_name","age").rows()
+    [ { child_name: 'Stephan', age: 10 },
+      { child_name: 'Terri', age: 7 },
+      { child_name: 'Ulrich', age: 12 },
+      { child_name: 'Vanessa', age: 8 },
+      { child_name: 'William', age: 15 },
+      { child_name: 'Xavier', age: 18 },
+      { child_name: 'Yolanda', age: 3 },
+      { child_name: 'Zachary', age: 9 } ]
 
 ### _df_.mutate( _new_fields_ )
 
@@ -222,45 +222,45 @@ inputs, and the fields to use as inputs.
 
      > family.mutate({
            new_age:function(r) { return r.age * 2; },
-           relationship:[function(v1,v2) { return v1 + " -> " + v2; },"name","kid_name"]
+           relationship:[function(v1,v2) { return v1 + " -> " + v2; },"name","child_name"]
          }).rows()
     [ { name: 'Alice',
-        kid_name: 'Stephan',
+        child_name: 'Stephan',
         age: 10,
         new_age: 20,
         relationship: 'Alice -> Stephan' },
       { name: 'Bob',
-        kid_name: 'Terri',
+        child_name: 'Terri',
         age: 7,
         new_age: 14,
         relationship: 'Bob -> Terri' },
       { name: 'Charlie',
-        kid_name: 'Ulrich',
+        child_name: 'Ulrich',
         age: 12,
         new_age: 24,
         relationship: 'Charlie -> Ulrich' },
       { name: 'Alice',
-        kid_name: 'Vanessa',
+        child_name: 'Vanessa',
         age: 8,
         new_age: 16,
         relationship: 'Alice -> Vanessa' },
       { name: 'Bob',
-        kid_name: 'William',
+        child_name: 'William',
         age: 15,
         new_age: 30,
         relationship: 'Bob -> William' },
       { name: 'Charlie',
-        kid_name: 'Xavier',
+        child_name: 'Xavier',
         age: 18,
         new_age: 36,
         relationship: 'Charlie -> Xavier' },
       { name: 'Alice',
-        kid_name: 'Yolanda',
+        child_name: 'Yolanda',
         age: 3,
         new_age: 6,
         relationship: 'Alice -> Yolanda' },
       { name: 'Bob',
-        kid_name: 'Zachary',
+        child_name: 'Zachary',
         age: 9,
         new_age: 18,
         relationship: 'Bob -> Zachary' } ]
@@ -295,14 +295,14 @@ are formed by the distinct values of fields _field_ , ... . Within
 each group, the rows are in the same relative order as in _df_.
 
     > family.group_by("name").rows()
-    [ [ { name: 'Alice', kid_name: 'Stephan', age: 10 },
-        { name: 'Alice', kid_name: 'Vanessa', age: 8 },
-        { name: 'Alice', kid_name: 'Yolanda', age: 3 } ],
-      [ { name: 'Bob', kid_name: 'Terri', age: 7 },
-        { name: 'Bob', kid_name: 'William', age: 15 },
-        { name: 'Bob', kid_name: 'Zachary', age: 9 } ],
-      [ { name: 'Charlie', kid_name: 'Ulrich', age: 12 },
-        { name: 'Charlie', kid_name: 'Xavier', age: 18 } ] ]
+    [ [ { name: 'Alice', child_name: 'Stephan', age: 10 },
+        { name: 'Alice', child_name: 'Vanessa', age: 8 },
+        { name: 'Alice', child_name: 'Yolanda', age: 3 } ],
+      [ { name: 'Bob', child_name: 'Terri', age: 7 },
+        { name: 'Bob', child_name: 'William', age: 15 },
+        { name: 'Bob', child_name: 'Zachary', age: 9 } ],
+      [ { name: 'Charlie', child_name: 'Ulrich', age: 12 },
+        { name: 'Charlie', child_name: 'Xavier', age: 18 } ] ]
 
 
 ## Grouped Data Frames
