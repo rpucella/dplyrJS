@@ -532,7 +532,7 @@ Return a new grouped data frame where each group of _gdf_ has been summarized
 into a single row with fields described in _new_fields_. 
 The _new_fields_ object gives for each new field the function used to
 compute the value of that new field. That function can be described in
-two ways, as in the [filter()](#dffilter-f-) method: as a function
+two ways, as in the [filter()](#gdf--filter-f-) method: as a function
 taking the group as input (it is passed an object mapping
 every field of _gdf_ to the array of values of that field in the
 group), or as an array with a function taking arrays of values as 
