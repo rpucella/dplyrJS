@@ -198,7 +198,7 @@ _start_ to index _end_ (exclusive). The first row of _df_ has index 0.
 
 ### _df_ . select( _field_ , ... )
 
-Return a new data frame where each row only has fields _field_, ... . 
+Return a new data frame where each row only has fields _field_, .... 
 
     > family.select("child_name","age").rows()
     [ { child_name: 'Stephan', age: 10 },
@@ -291,7 +291,7 @@ data frame containing the mean age of all the children in `family`:
 ### _df_ . group_by( _field_ , ... )
 
 Return a [grouped data frame](#grouped-data-frames) where the groups
-are formed by the distinct values of fields _field_ , ... . Within
+are formed by the distinct values of fields _field_ , .... Within
 each group, the rows are in the same relative order as in _df_.
 
     > family.group_by("name").rows()
@@ -437,7 +437,7 @@ of field _field_ is preserved. If _descending_ is specified and
 ### _gdf_ . filter( _f_ )
 ### _gdf_ . filter( [ _f_ , _field_ ,... ] )
 
-Return a new grouped data frame containing only the rows of _df_ satisfying a
+Return a new grouped data frame containing only the rows of _gdf_ satisfying a
 given property. That property can be described in two ways: as a
 function _f_ taking a whole row, or as an
 array [ _f_ , _field_ , ...] where _f_ is a function operating on values
@@ -489,7 +489,7 @@ structure of _gdf_ is preserved.
 ### _gdf_ . select( _field_ , ... )
 
 Return a new grouped data frame where each row only has fields
-_field_, ... . The group structure is preserved.
+_field_, .... The group structure is preserved.
 
     > family.group_by("name").select("child_name","age").rows();
     [ [ { child_name: 'Stephan', age: 10 },
@@ -505,7 +505,7 @@ _field_, ... . The group structure is preserved.
 ### _gdf_ . mutate( _new_fields_ )
 
 Return a new grouped data frame where each row of _gdf_ has been augmented with new
-fields. The group structure structure is preserved. The new fields are described in _new_field_ which is an object
+fields. The group structure is preserved. The new fields are described in _new_field_ which is an object
 assigning to each new field the function used to compute the value of
 that new field for every row. That function can be given in two ways,
 as in the [filter()](#gdf--filter-f-) method: as a function taking the
@@ -552,7 +552,7 @@ data frame containing the mean age of children in a grouped `family`:
 ### _gdf_ . group_by( _field_ , ... )
 
 Return a grouped data frame where every group of _gdf_ has been futher
-grouped by the distinct values of _field_ , ... . 
+grouped by the distinct values of _field_ , .... 
 
     > family.group_by("name").group_by("child_name").rows()
     [ [ { name: 'Alice', child_name: 'Stephan', age: 10 } ],
