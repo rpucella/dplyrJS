@@ -216,7 +216,7 @@ Return a new data frame where each row of _df_ has been augmented with new
 fields. The new fields are described in _new_field_ which is an object
 assigning to each new field the function used to compute the value of
 that new field for every row. That function can be given in two ways,
-as in the [filter()](#dffilter-f-) method: as a function taking the
+as in the [filter()](#df--filter-f-) method: as a function taking the
 whole row as input, or as an array with a function taking values as
 inputs, and the fields to use as inputs.
 
@@ -508,7 +508,7 @@ Return a new grouped data frame where each row of _gdf_ has been augmented with 
 fields. The group structure structure is preserved. The new fields are described in _new_field_ which is an object
 assigning to each new field the function used to compute the value of
 that new field for every row. That function can be given in two ways,
-as in the [filter()](#gdffilter-f-) method: as a function taking the
+as in the [filter()](#gdf--filter-f-) method: as a function taking the
 whole row as input, or as an array with a function taking values as
 inputs, and the fields to use as inputs.
 
