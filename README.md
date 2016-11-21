@@ -273,7 +273,7 @@ Return a new data frame where the rows of _df_ have been summarized
 into a single row with fields described in _new_fields_. 
 The _new_fields_ object gives for each new field the function used to
 compute the value of that new field. That function can be described in
-two ways, as in the [filter()](#dffilter-f-) method: as a function
+two ways, as in the [filter()](#df--filter-f-) method: as a function
 taking the whole data set as input (it is passed an object mapping
 every field of _df_ to the array of values of that field in the
 dataset), or as an array with a function taking arrays of values as
