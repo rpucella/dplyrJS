@@ -91,8 +91,8 @@ function dataframe (rows) {
     
     DF.prototype.forEach = function (f) {
 	var that = this;
-	this._order.forEach(function(i) {
-	    f(that._rows[i]);
+	this._order.forEach(function(i,index_i) {
+	    f(that._rows[i],index_i);
 	});
     }
     
@@ -160,11 +160,11 @@ function dataframe (rows) {
     
     GDF.prototype.forEach = function (f) {
 	var that = this;
-	that._group_order.forEach(function(g) {
-		g.forEach(function(i) {
-			return f(that._rows[i]);
-		    });
+	that._group_order.forEach(function(g,index_g) {
+	    g.forEach(function(i,index_i) {
+		return f(that._rows[i],index_g,index_i);
 	    });
+	});
     }
     
     GDF.prototype.reduce = function (f,init) {
