@@ -605,6 +605,94 @@ function test () {
 	     {a:1, b:3, c:"Charlie"},
 	     {a:2, b:3, c:"Foxtrot"}]);
 
+
+    /* new operations */
+
+    test_df("DF mutate_window() row function",
+	    function() { 
+		var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		var df = d.dataframe(data.slice(0,4));
+		return df.mutate_window({"rev_c":function(R) { return rev(R.c); }}).rows();
+	    },
+	    [{a:1, b:1,c:"Alpha",rev_c:"Delta"},
+	     {a:1, b:2, c:"Bravo",rev_c:"Charlie"},
+	     {a:1, b:3, c:"Charlie",rev_c:"Bravo"},
+	     {a:2, b:1, c:"Delta",rev_c:"Alpha"}]);
+
+    test_df("DF mutate_window() value function",
+	    function() { 
+		var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		var df = d.dataframe(data.slice(0,4));
+		return df.mutate_window({"rev_c":[rev,"c"]})
+		    .rows();
+	    },
+	    [{a:1, b:1,c:"Alpha",rev_c:"Delta"},
+	     {a:1, b:2, c:"Bravo",rev_c:"Charlie"},
+	     {a:1, b:3, c:"Charlie",rev_c:"Bravo"},
+	     {a:2, b:1, c:"Delta",rev_c:"Alpha"}]);
+
+    test_df("DF mutate_window() multiple",
+	    function() { 
+		var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		var df = d.dataframe(data.slice(0,4));
+		return df.mutate_window({
+                          "rev_c":[rev,"c"],
+      		          "first_b":[function(vs) { 
+			                return vs.map(function(v) { return vs[0]; }); 
+		                     },"b"]
+		        })
+		    .rows();
+	    },
+	    [{a:1, b:1,c:"Alpha",rev_c:"Delta",first_b:1},
+	     {a:1, b:2, c:"Bravo",rev_c:"Charlie",first_b:1},
+	     {a:1, b:3, c:"Charlie",rev_c:"Bravo",first_b:1},
+	     {a:2, b:1, c:"Delta",rev_c:"Alpha",first_b:1}]);
+
+    test_gdf("GDF mutate_window() row function",
+	     function() {
+		 var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		 var gdf = d.dataframe(data.slice(0,6)).group_by("b");
+		 return gdf.mutate_window({"rev_c":function(R) { return rev(R.c); }}).rows();
+	    },
+	     [[{a:1, b:1, c:"Alpha", rev_c:"Delta"},
+	       {a:2, b:1, c:"Delta", rev_c:"Alpha"}],
+	      [{a:1, b:2, c:"Bravo", rev_c:"Echo"},
+	       {a:2, b:2, c:"Echo", rev_c:"Bravo"}],
+	      [{a:1, b:3, c:"Charlie", rev_c:"Foxtrot"},
+	       {a:2, b:3, c:"Foxtrot", rev_c:"Charlie"}]]);
+
+
+    test_gdf("GDF mutate() value function",
+	    function() {
+		var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		var gdf = d.dataframe(data.slice(0,6)).group_by("b");
+		return gdf.mutate_window({"rev_c":[rev,"c"]}).rows();
+	    },
+	     [[{a:1, b:1, c:"Alpha", rev_c:"Delta"},
+	       {a:2, b:1, c:"Delta", rev_c:"Alpha"}],
+	      [{a:1, b:2, c:"Bravo", rev_c:"Echo"},
+	       {a:2, b:2, c:"Echo", rev_c:"Bravo"}],
+	      [{a:1, b:3, c:"Charlie", rev_c:"Foxtrot"},
+	       {a:2, b:3, c:"Foxtrot", rev_c:"Charlie"}]]);
+
+    test_gdf("GDF mutate() multiple ",
+	     function() {
+		 var rev = function(vs) { return vs.map(function(x) { return x;}).reverse(); };
+		 var gdf = d.dataframe(data.slice(0,6)).group_by("b");
+		 return gdf.mutate_window({
+                          "rev_c":[rev,"c"],
+      		          "first_c":[function(vs) { 
+			                return vs.map(function(v) { return vs[0]; }); 
+		                     },"c"]
+                 }).rows();
+	     },
+	     [[{a:1, b:1, c:"Alpha", rev_c:"Delta", first_c:"Alpha"},
+	       {a:2, b:1, c:"Delta", rev_c:"Alpha", first_c:"Alpha"}],
+	      [{a:1, b:2, c:"Bravo", rev_c:"Echo", first_c:"Bravo"},
+	       {a:2, b:2, c:"Echo", rev_c:"Bravo", first_c:"Bravo"}],
+	      [{a:1, b:3, c:"Charlie", rev_c:"Foxtrot", first_c:"Charlie"},
+	       {a:2, b:3, c:"Foxtrot", rev_c:"Charlie", first_c:"Charlie"}]]);
+
 }
 
 test();

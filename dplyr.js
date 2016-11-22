@@ -254,7 +254,7 @@ function dataframe (rows) {
     DF.prototype.filter = function(f) {
 	var that = this;
 	var actual_f = lift(f);
-	result = [];
+	var result = [];
 	this._order.forEach(function(i) {
 	    if (actual_f(that._rows[i])) {
 		result.push(i);
@@ -308,8 +308,8 @@ function dataframe (rows) {
 
     DF.prototype.distinct = function () {
 	// use a hash as a first stab at checking equality?
-	result = []
-	found = []
+	var result = []
+	var found = []
 	for (var i=0; i<this.length;i++) {
 	    var current = this._rows[this._order[i]];
 	    if (!(find(current,found))) {
@@ -401,7 +401,7 @@ function dataframe (rows) {
 	});
 	
 	
-	result = {};
+	var result = {};
 	Object.keys(descr).forEach(function(k) {
 	    var f = lift(descr[k]);
 	    result[k] = f(aggregate);
@@ -520,6 +520,125 @@ function dataframe (rows) {
 
 
 
+    /* mutate_window */
+
+    /* a version of mutate that uses window functions */
+
+    DF.prototype.mutate_window = function (descr) {
+	var that = this;
+
+
+	// gather the fields we need -- null if all 
+	var requiredFieldsList = null;
+
+	var requiredFields = function(r) {
+	    return requiredFieldsList ? requiredFieldsList : Object.keys(r);
+	}
+
+	var collect = {};
+
+	that._order.forEach(function(i) {
+	    var r = that._rows[i];
+	    requiredFields(r).forEach(function(f) {
+		if (collect[f]) {
+		    collect[f].push(r[f]);
+		} else {
+		    collect[f] = [r[f]];
+		}
+	    });
+	});
+
+	var new_fields = {};
+	Object.keys(descr).forEach(function(k) { 
+	    var f = lift(descr[k]);
+	    new_fields[k] = f(collect);
+	    // should check length here!
+	});
+
+	var result = [];
+	var count = 0;
+	var order = [];
+	that._order.forEach(function(i,index) {
+	    var r = that._rows[i];
+	    var new_r = {};
+	    for (k in r) {
+		new_r[k] = r[k];
+	    }
+	    Object.keys(descr).forEach(function(k) {
+		new_r[k] = new_fields[k][index];
+	    });
+	    result.push(new_r);
+	    order.push(count);
+	    count += 1;
+	});
+
+	return new DF(result,order);
+    }
+
+	    
+    GDF.prototype.mutate_window = function (descr) { 
+	var that = this;
+	
+	// gather the fields we need -- null if all 
+	var requiredFieldsList = null;
+
+	var requiredFields = function(r) {
+	    return requiredFieldsList ? requiredFieldsList : Object.keys(r);
+	}
+
+	var gcollect = [];
+	that._group_order.forEach(function(g) {
+	    var collect = {};
+	    g.forEach(function(i) {
+		var r = that._rows[i];
+		requiredFields(r).forEach(function(f) {
+		    if (collect[f]) {
+			collect[f].push(r[f]);
+		    } else {
+			collect[f] = [r[f]];
+		    }
+		});
+	    });
+	    gcollect.push(collect);
+	});
+	
+	gnew_fields = [];
+	gcollect.forEach(function(collect) {
+	    var new_fields = {};
+	    Object.keys(descr).forEach(function(k) { 
+		var f = lift(descr[k]);
+		new_fields[k] = f(collect);
+		// should check length here!
+	    });
+	    gnew_fields.push(new_fields);
+	});
+
+	var count = 0;
+	var group_order = [];
+	var result = [];
+	that._group_order.forEach(function(g,index_g) { 
+	    var order = [];
+	    g.forEach(function(i,index_i) { 
+		var r = that._rows[i];
+		var new_r = {};
+		for (k in r) {
+		    new_r[k] = r[k];
+		}
+		Object.keys(descr).forEach(function(k) {
+		    new_r[k] = gnew_fields[index_g][k][index_i];
+		});
+		result.push(new_r);
+		order.push(count);
+		count += 1;
+	    });
+	    group_order.push(order);
+	});
+
+	return new GDF(result,this._group_fields,group_order);
+    }
+
+
+
     /* group_by */
 
     function make_groups (rows,order,fields) {
@@ -584,7 +703,7 @@ function dataframe (rows) {
 	// preserve order of the values in the grouping fields
 	var fields = arr(arguments);
 
-	result = make_groups(this._rows,this._order,fields);
+	var result = make_groups(this._rows,this._order,fields);
 	
         return new GDF (this._rows,fields,result);
 
@@ -673,7 +792,7 @@ function last (vs) {
 }
 
 function min (vs) {
-    result = vs[0];
+    var result = vs[0];
     for (var i=0; i<vs.length; i++) {
 	if (vs[i] < result) {
 	    result = vs[i];
@@ -683,7 +802,7 @@ function min (vs) {
 }
 
 function max (vs) {
-    result = vs[0];
+    var result = vs[0];
     for (var i=0; i<vs.length; i++) {
 	if (vs[i] > result) {
 	    result = vs[i];
