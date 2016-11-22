@@ -16,7 +16,6 @@
 // - cloning / deepcopy
 
 
-
 function dataframe (rows) {
 
     function DplyrException (message) {
@@ -626,6 +625,13 @@ function dataframe (rows) {
     } 
 
 
+    DF.prototype.prototype = function () {
+	return DF.prototype;
+    }
+
+    GDF.prototype.prototype = function () {
+	return GDF.prototype;
+    }
     
     return new DF(rows);
 }
@@ -687,6 +693,9 @@ function max (vs) {
 }
 
 
+var DF_prototype = dataframe([]).prototype()
+
+var GDF_prototype = dataframe([]).group_by("").prototype()
 
 
 /************************************************************
@@ -696,4 +705,6 @@ function max (vs) {
 
 if (exports) {
     exports.dataframe = dataframe;
+    exports.DF_prototype = DF_prototype;
+    exports.GDF_prototype = GDF_prototype;
 }
